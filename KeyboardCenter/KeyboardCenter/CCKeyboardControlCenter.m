@@ -117,7 +117,6 @@
             UITextField *previous = [self.fields objectAtIndex:index -1];
             if ([previous canBecomeFirstResponder]&& [previous becomeFirstResponder])
                 [self adjustRootViewForView:previous];
-            [self changeButtonStatusForViewAtIndex:[self.fields indexOfObject:previous]];
             
             return YES;
         }
@@ -133,7 +132,6 @@
             UITextField *next = [self.fields objectAtIndex:index +1];
             if ([next canBecomeFirstResponder]&& [next becomeFirstResponder])
                 [self adjustRootViewForView:next];
-            [self changeButtonStatusForViewAtIndex:[self.fields indexOfObject:next]];
             return YES;
         }
     }
@@ -147,7 +145,6 @@
             UITextField *next = [self.fields objectAtIndex:index +1];
             if ([next canBecomeFirstResponder]) {
                 [self adjustRootViewForView:next];
-                [self changeButtonStatusForViewAtIndex:[self.fields indexOfObject:next]];
             }
             return [next becomeFirstResponder];
         }
@@ -162,7 +159,6 @@
             UITextField *previous = [self.fields objectAtIndex:index -1];
             if ([previous canBecomeFirstResponder]) {
                 [self adjustRootViewForView:previous];
-                [self changeButtonStatusForViewAtIndex:[self.fields indexOfObject:previous]];
             }
             return [previous becomeFirstResponder];
         }
@@ -233,11 +229,16 @@
     if (CGRectIsEmpty(self.keyboardEndRect) || CGRectIsEmpty(self.keyboardBeginRect)) {
         self.viewWaitToAdjust = view;
     } else {
+
         [self adjustRootViewForView:view];
     }
+    
+    
 }
 
 - (void)adjustRootViewForView:(UIView *)view {
+    NSInteger index = [self.fields indexOfObject:view];
+    [self changeButtonStatusForViewAtIndex:index];
     if ([self isNeedUponAdjustView:view]) {
         [self uponAdjustRootViewForView:view];
     }else if([self isNeedBelowAdjustView:view]) {
